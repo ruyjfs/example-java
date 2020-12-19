@@ -1,0 +1,30 @@
+version: "3.5"
+services: 
+  example-java-db-service:
+    container_name: example-java-db-only
+    image: postgres:alpine
+    env_file: ./docker/local.env
+    volumes:
+      - ./docker/database/postgres/data:/var/lib/postgresql/data
+      - ./docker/database/postgres/scripts:/docker-entrypoint-initdb.d
+    ports:
+      - "5435:5432"
+    tty: true
+    restart: always
+    healthcheck:
+      #IMPORTANT! change this if you have changed a local.env
+      test: ["CMD-SHELL", "pg_isready -U example-java-usr -d example-java-db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  example-java-adminer-service:
+    container_name: example-java-adminer-only
+    image: adminer
+    restart: always
+    ports:
+      - 8086:8080
+    env_file: ./docker/local.env
+    links:
+      - example-java-db-service
+    depends_on:
+      - example-java-db-service
