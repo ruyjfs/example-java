@@ -1,0 +1,25 @@
+#server:
+#  port: 8085
+spring:
+  data:
+    rest:
+      basePath: /api/v1
+    mongodb:
+      uri: mongodb://examplejava-usr:examplejava-psw@localhost:27017/admin
+  datasource:
+    url: jdbc:postgresql://localhost:5435/example-java-db
+    username: example-java-usr
+    password: example-java-psw
+  hibernate:
+    dialect: org.hibernate.dialect.PostgreSQLDialect
+    hbm2ddl:
+      auto: create
+  jpa:
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto=update:

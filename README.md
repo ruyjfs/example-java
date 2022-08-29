@@ -102,7 +102,7 @@ gin --port=8080 #or ~/go/bin/gin --port=8080
 > With VScode and SGBD on Docker
 
 ```bash
-docker-compose -f docker-compose-db.yml up
+docker-compose -f db-postgres.yml up
 ```
 
 > Open your debug on VScode and run "Launch file"
@@ -237,7 +237,7 @@ go run main.go
 > With VScode and SGBD on Docker
 
 ```bash
-docker-compose -f docker-compose-db.yml up
+docker-compose -f db-postgres.yml up
 ```
 
 ## Unity Test and Test Integration
