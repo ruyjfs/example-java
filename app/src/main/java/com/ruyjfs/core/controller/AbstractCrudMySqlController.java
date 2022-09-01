@@ -1,19 +1,18 @@
 package com.ruyjfs.core.controller;
 
 import com.ruyjfs.core.helper.ResponseHelper;
+import com.ruyjfs.core.service.AbstractCrudMySqlService;
 import com.ruyjfs.core.service.AbstractCrudPostgreService;
-import com.ruyjfs.core.service.CrudPostgreServiceInterface;
-import com.ruyjfs.core.service.CrudServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public abstract class AbstractCrudPostgreController<T> {
+public abstract class AbstractCrudMySqlController<T> {
 
   @Autowired
-  protected AbstractCrudPostgreService<T> service;
+  protected AbstractCrudMySqlService<T> service;
 
   @GetMapping
   public ResponseEntity<Object> list() {

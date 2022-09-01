@@ -1,16 +1,19 @@
 package com.ruyjfs.core.service;
 
-import com.ruyjfs.microservicemysql.model.Format;
+import com.ruyjfs.core.model.Dto.ErrorDTO;
+import com.ruyjfs.microservicemysql.exception.ValidationException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @Log4j2
-public abstract class AbstractCrudPostgreService<T> {
+public abstract class AbstractCrudMySqlService<T> {
 
     @Autowired
     protected CrudRepository<T, Long> repository;
@@ -21,11 +24,19 @@ public abstract class AbstractCrudPostgreService<T> {
     }
 
     public T insert(T data) {
-        return repository.save(data);
+        List<ErrorDTO> errors = new ArrayList<>();
+        beforeSave(data);
+        if (isValid(data)) {
+            return repository.save(data);
+        }
+        errors.add(new ErrorDTO("formato", "Is exists"));
+        throw new ValidationException(errors, data);
     }
 
-
     public T save(T data) {
+        List<ErrorDTO> errors = new ArrayList<>();
+
+        beforeSave(data);
         return repository.save(data);
         //        entity.stream().map(t -> (t.get("id") = id)).collect(Collectors.toCollection());
     //        entity.get();
@@ -34,7 +45,15 @@ public abstract class AbstractCrudPostgreService<T> {
 //        return Optional.of(repository.save(entity.get()));
     }
 
+    public void beforeSave(T data) {
+    }
+
+    public boolean isValid(T data){
+        return true;
+    }
+
     public Optional<T> save(Long id,T data) {
+        beforeSave(data);
 //        return repository.save(data);
         //        entity.stream().map(t -> (t.get("id") = id)).collect(Collectors.toCollection());
         //        entity.get();
@@ -55,11 +74,6 @@ public abstract class AbstractCrudPostgreService<T> {
 
     public Optional<T> getById(Long id) {
         return repository.findById(id);
-    }
-
-    public void isValid(T data) {
-        // TODO Auto-generated method stub
-
     }
 
     public Optional<T> delete(Long id) {
